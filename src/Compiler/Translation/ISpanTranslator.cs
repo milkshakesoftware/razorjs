@@ -2,12 +2,12 @@
 using System.IO;
 using System.Web.Razor.Parser.SyntaxTree;
 
-namespace RazorJS.Compiler
+namespace RazorJS.Compiler.Translation
 {
-	public interface ISpanRenderer
+	public interface ISpanTranslator
 	{
 		Type[] SupportsCodeGenerators { get; }
 
-		void Render(Span span, TextWriter writer);
+		void Translate(Span span, TextWriter writer);
 	}
 }

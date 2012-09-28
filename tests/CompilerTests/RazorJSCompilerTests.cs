@@ -10,7 +10,7 @@ namespace RazorJS.CompilerTests
 	public class RazorJSCompilerTests
 	{
 		[TestMethod]
-		public void TestMethod1()
+		public void Debugger()
 		{
 			string viewTemplate = this.GetViewTemplate("Basic_NoModelDefinition");
 

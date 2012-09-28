@@ -1,4 +1,5 @@
-﻿using RazorJS.Compiler.SpanRenderers;
+﻿using RazorJS.Compiler.Translation;
+using RazorJS.Compiler.TemplateParsers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,17 +10,26 @@ namespace RazorJS.Compiler
 {
 	public class RazorJSCompiler
 	{
-		private List<ISpanRenderer> _spanRenderers;
+		private List<ISpanTranslator> _translators;
+
+		private IRazorTemplateParser _templateParser;
 
 		public RazorJSCompiler()
 		{
-			this.CreateInternalSpanRenderers();
+			this._templateParser = new CSharpRazorTemplateParser();
+			this.CreateInternalTranslators();
 		}
 
-		public RazorJSCompiler(params ISpanRenderer[] blockRenderers)
+		public RazorJSCompiler(IRazorTemplateParser templateParser, params ISpanTranslator[] translators)
 		{
-			this.CreateInternalSpanRenderers();
-			this._spanRenderers.AddRange(blockRenderers);
+			this._templateParser = templateParser;
+
+			this.CreateInternalTranslators();
+
+			if (translators != null && translators.Length > 0)
+			{
+				this._translators.AddRange(translators);
+			}
 		}
 
 		public CompilerResults Compile(string razorTemplate)
@@ -87,25 +97,25 @@ namespace RazorJS.Compiler
 
 			System.Diagnostics.Trace.WriteLine(span.CodeGenerator.GetType() + ": " + span.Content);
 
-			ISpanRenderer renderer = this._spanRenderers.FirstOrDefault(b => b.SupportsCodeGenerators.Contains(span.CodeGenerator.GetType()));
+			ISpanTranslator renderer = this._translators.FirstOrDefault(b => b.SupportsCodeGenerators.Contains(span.CodeGenerator.GetType()));
 
 			if (renderer != null)
 			{
-				renderer.Render(span, output);
+				renderer.Translate(span, output);
 			}
 			else if (span.Kind == SpanKind.Markup)
 			{
-				new NullSpanRenderer().Render(span, output);
+				new NullSpanTranslator().Translate(span, output);
 			}
 		}
 
-		private void CreateInternalSpanRenderers()
+		private void CreateInternalTranslators()
 		{
-			this._spanRenderers = new List<ISpanRenderer>();
-			this._spanRenderers.Add(new MarkupSpanRenderer());
-			this._spanRenderers.Add(new NullSpanRenderer());
-			this._spanRenderers.Add(new ExpressionRenderer());
-			this._spanRenderers.Add(new StatementRenderer());
+			this._translators = new List<ISpanTranslator>();
+			this._translators.Add(new MarkupSpanTranslator());
+			this._translators.Add(new NullSpanTranslator());
+			this._translators.Add(new ExpressionTranslator());
+			this._translators.Add(new StatementTranslator());
 		}
 	}
 }

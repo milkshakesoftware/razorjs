@@ -73,13 +73,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompilerResults.cs" />
-    <Compile Include="ISpanRenderer.cs" />
-    <Compile Include="SpanRenderers\NullSpanRenderer.cs" />
-    <Compile Include="SpanRenderers\ExpressionRenderer.cs" />
-    <Compile Include="SpanRenderers\MarkupSpanRenderer.cs" />
+    <Compile Include="Translation\IJavaScriptArrayWriter.cs" />
+    <Compile Include="Translation\ISpanTranslator.cs" />
+    <Compile Include="Translation\NullSpanTranslator.cs" />
+    <Compile Include="Translation\ExpressionTranslator.cs" />
+    <Compile Include="Translation\MarkupSpanTranslator.cs" />
     <Compile Include="RazorJSCompiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpanRenderers\StatementRenderer.cs" />
+    <Compile Include="Translation\StatementTranslator.cs" />
+    <Compile Include="TemplateParsers\IRazorTemplateParser.cs" />
+    <Compile Include="TemplateParsers\CSharpRazorTemplateParser.cs" />
+    <Compile Include="Translation\JavaScripArrayWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
