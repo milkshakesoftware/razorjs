@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compiler", "Compiler\Compiler.csproj", "{E0D110E1-1E20-4112-A6C0-DB251BEC776E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F1161A89-C6F1-44BC-A1E6-FB29481B2414}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerTests", "..\tests\CompilerTests\CompilerTests.csproj", "{FB8C7571-26CA-4E19-9EBC-EC4FCFB69AFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0D110E1-1E20-4112-A6C0-DB251BEC776E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D110E1-1E20-4112-A6C0-DB251BEC776E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D110E1-1E20-4112-A6C0-DB251BEC776E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D110E1-1E20-4112-A6C0-DB251BEC776E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB8C7571-26CA-4E19-9EBC-EC4FCFB69AFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB8C7571-26CA-4E19-9EBC-EC4FCFB69AFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB8C7571-26CA-4E19-9EBC-EC4FCFB69AFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB8C7571-26CA-4E19-9EBC-EC4FCFB69AFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

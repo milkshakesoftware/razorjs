@@ -1,0 +1,12 @@
+﻿
+<div class="products">
+
+	@foreach (var item in Model.Products) {
+		<div class="product">
+			<img src="@item.ImageUrl" />
+			<p>@item.ShortDescription</p>
+			<a href="#buy" data-id="@item.Id">Buy</a>
+		</div>
+	}
+
+</div>
