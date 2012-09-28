@@ -93,13 +93,17 @@ namespace RazorJS.Compiler
 			{
 				renderer.Render(span, output);
 			}
+			else if (span.Kind == SpanKind.Markup)
+			{
+				new NullSpanRenderer().Render(span, output);
+			}
 		}
 
 		private void CreateInternalSpanRenderers()
 		{
 			this._spanRenderers = new List<ISpanRenderer>();
 			this._spanRenderers.Add(new MarkupSpanRenderer());
-			this._spanRenderers.Add(new CodeSpanRenderer());
+			this._spanRenderers.Add(new NullSpanRenderer());
 			this._spanRenderers.Add(new ExpressionRenderer());
 			this._spanRenderers.Add(new StatementRenderer());
 		}

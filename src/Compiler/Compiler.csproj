@@ -74,7 +74,7 @@
   <ItemGroup>
     <Compile Include="CompilerResults.cs" />
     <Compile Include="ISpanRenderer.cs" />
-    <Compile Include="SpanRenderers\CodeSpanRenderer.cs" />
+    <Compile Include="SpanRenderers\NullSpanRenderer.cs" />
     <Compile Include="SpanRenderers\ExpressionRenderer.cs" />
     <Compile Include="SpanRenderers\MarkupSpanRenderer.cs" />
     <Compile Include="RazorJSCompiler.cs" />

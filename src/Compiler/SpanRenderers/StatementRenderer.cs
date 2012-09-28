@@ -21,7 +21,11 @@ namespace RazorJS.Compiler.SpanRenderers
 			var @foreach = Regex.Match(code, @"foreach *\( *(?<Type>[^ ]*) (?<Variable>[^ ]*) in (?<Enumerator>[^ )]*)\) *{");
 
 			if (!@foreach.Success)
+			{
+				writer.Write(code);
+
 				return;
+			}
 
 			var groups = @foreach.Groups;
 

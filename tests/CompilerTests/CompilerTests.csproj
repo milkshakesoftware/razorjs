@@ -71,6 +71,9 @@
     <None Include="Views\Basic_StronglyTyped.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="template.js" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
