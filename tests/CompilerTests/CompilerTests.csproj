@@ -109,6 +109,7 @@
     <None Include="packages.config" />
     <None Include="Views\Basic_NoModelDefinition.cshtml" />
     <None Include="Views\Basic_StronglyTyped.cshtml" />
+    <None Include="Views\ContainsInlineHelper.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup />

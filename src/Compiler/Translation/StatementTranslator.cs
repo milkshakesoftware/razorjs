@@ -1,9 +1,12 @@
-﻿using System;
+﻿using RazorJS.Compiler.Translation.CodeTranslation;
+using System;
+using System.Linq;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Razor.Generator;
 using System.Web.Razor.Parser.SyntaxTree;
+using System.Collections.Generic;
 
 namespace RazorJS.Compiler.Translation
 {
@@ -11,14 +14,17 @@ namespace RazorJS.Compiler.Translation
 	{
 		private readonly IJavaScriptArrayWriter _javaScriptArrayWriter;
 
+		private readonly ICodeSpanTranslator[] _codeSpanTranslators;
+
 		public StatementTranslator()
 		{
 			this._javaScriptArrayWriter = new JavaScripArrayWriter();
 		}
 
-		public StatementTranslator(IJavaScriptArrayWriter javaScriptArrayWriter)
+		public StatementTranslator(IJavaScriptArrayWriter javaScriptArrayWriter, params ICodeSpanTranslator[] codeSpanTranslators)
 		{
 			this._javaScriptArrayWriter = javaScriptArrayWriter;
+			this._codeSpanTranslators = codeSpanTranslators;
 		}
 
 		public Type[] SupportsCodeGenerators
@@ -39,6 +45,10 @@ namespace RazorJS.Compiler.Translation
 			}
 
 			string code = this.CleanConentForCode(span.Content);
+
+			ICodeSpanTranslator matchedTranslator = this._codeSpanTranslators.FirstOrDefault(c => c.Match(span));
+			matchedTranslator.Translate(span, writer);
+
 
 			var @foreach = Regex.Match(code, @"foreach *\( *(?<Type>[^ ]*) (?<Variable>[^ ]*) in (?<Enumerator>[^ )]*)\) *{");
 
