@@ -1,5 +1,6 @@
-﻿using RazorJS.Compiler.Translation;
+﻿using RazorJS.Compiler.TemplateBuilders;
 using RazorJS.Compiler.TemplateParsers;
+using RazorJS.Compiler.Translation;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,9 +11,11 @@ namespace RazorJS.Compiler
 {
 	public class RazorJSCompiler
 	{
-		private List<ISpanTranslator> _translators;
+		private readonly ITemplateParser _templateParser;
 
-		private IRazorTemplateParser _templateParser;
+		private readonly ITemplateBuilder _templateBuilder;
+
+		private List<ISpanTranslator> _translators;
 
 		public RazorJSCompiler()
 		{
@@ -20,9 +23,10 @@ namespace RazorJS.Compiler
 			this.CreateInternalTranslators();
 		}
 
-		public RazorJSCompiler(IRazorTemplateParser templateParser, params ISpanTranslator[] translators)
+		public RazorJSCompiler(ITemplateParser templateParser, ITemplateBuilder templateBuilder, params ISpanTranslator[] translators)
 		{
 			this._templateParser = templateParser;
+			this._templateBuilder = templateBuilder;
 
 			this.CreateInternalTranslators();
 
@@ -32,18 +36,17 @@ namespace RazorJS.Compiler
 			}
 		}
 
-		public CompilerResults Compile(string razorTemplate)
+		public CompilerResult Compile(string razorTemplate)
 		{
-			using (StringWriter sw = new StringWriter())
+			using (StringReader sr = new StringReader(razorTemplate))
 			{
-				using (StringReader sr = new StringReader(razorTemplate))
-				{
-					return this.Compile(sr, sw);
-				}
+				this.Compile(sr, this._templateBuilder);
 			}
+
+			return null;
 		}
 
-		public virtual CompilerResults Compile(StringReader razorTemplate, StringWriter output)
+		public virtual void Compile(StringReader razorTemplate, ITemplateBuilder templateBuilder)
 		{
 			RazorEngineHost host = new RazorEngineHost(new CSharpRazorCodeLanguage());
 			RazorTemplateEngine engine = new RazorTemplateEngine(host);
@@ -52,43 +55,41 @@ namespace RazorJS.Compiler
 
 			if (!parserResults.Success)
 			{
-				return new CompilerResults(parserResults.ParserErrors);
+				//return new CompilerResult(parserResults.ParserErrors);
 			}
 
-			this.Render(parserResults.Document, output);
-
-			return new CompilerResults(output.GetStringBuilder().ToString());
+			this.Render(parserResults.Document, templateBuilder);
 		}
 
-		private void Render(Block document, TextWriter output)
+		private void Render(Block document, ITemplateBuilder templateBuilder)
 		{
-			output.Write("function (Model) { ");
-			output.Write("var _buf = []; ");
+			templateBuilder.Write("function (Model) { ");
+			templateBuilder.Write("var _tmpl = []; ");
 
 			if (document != null)
 			{
-				this.RenderBlock(document, output);
+				this.RenderBlock(document, templateBuilder);
 			}
 
-			output.Write(" return _buf.join(''); };");
+			templateBuilder.Write(" return _tmpl.join(''); };");
 		}
 
-		private void RenderBlock(Block block, TextWriter output)
+		private void RenderBlock(Block block, ITemplateBuilder templateBuilder)
 		{
 			foreach (SyntaxTreeNode child in block.Children)
 			{
 				if (child.IsBlock)
 				{
-					this.RenderBlock(child as Block, output);
+					this.RenderBlock(child as Block, templateBuilder);
 				}
 				else
 				{
-					this.RenderSpan(child as Span, output);
+					this.RenderSpan(child as Span, templateBuilder);
 				}
 			}
 		}
 
-		private void RenderSpan(Span span, TextWriter output)
+		private void RenderSpan(Span span, ITemplateBuilder templateBuilder)
 		{
 			if (span == null)
 			{
@@ -101,11 +102,11 @@ namespace RazorJS.Compiler
 
 			if (renderer != null)
 			{
-				renderer.Translate(span, output);
+				renderer.Translate(span, templateBuilder);
 			}
 			else if (span.Kind == SpanKind.Markup)
 			{
-				new NullSpanTranslator().Translate(span, output);
+				new NullSpanTranslator().Translate(span, templateBuilder);
 			}
 		}
 

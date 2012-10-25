@@ -12,7 +12,7 @@ namespace RazorJS.CompilerTests
 		[TestMethod]
 		public void Debugger()
 		{
-			string viewTemplate = this.GetViewTemplate("ContainsInlineHelper");
+			string viewTemplate = this.GetViewTemplate("Basic_StronglyTyped");
 
 			var sut = new RazorJSCompiler();
 			var result = sut.Compile(viewTemplate);

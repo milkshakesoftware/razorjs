@@ -72,8 +72,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompilerResults.cs" />
-    <Compile Include="Translation\IJavaScriptArrayWriter.cs" />
+    <Compile Include="CompilerResult.cs" />
+    <Compile Include="HelperFunction.cs" />
+    <Compile Include="TemplateBuilders\ITemplateBuilder.cs" />
+    <Compile Include="TemplateBuilders\RazorJSTemplateBuilder.cs" />
     <Compile Include="Translation\ISpanTranslator.cs" />
     <Compile Include="Translation\NullSpanTranslator.cs" />
     <Compile Include="Translation\ExpressionTranslator.cs" />
@@ -83,9 +85,8 @@
     <Compile Include="Translation\CodeTranslation\ICodeSpanTranslator.cs" />
     <Compile Include="Translation\CodeTranslation\StatementTypes.cs" />
     <Compile Include="Translation\StatementTranslator.cs" />
-    <Compile Include="TemplateParsers\IRazorTemplateParser.cs" />
+    <Compile Include="TemplateParsers\ITemplateParser.cs" />
     <Compile Include="TemplateParsers\CSharpRazorTemplateParser.cs" />
-    <Compile Include="Translation\JavaScripArrayWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

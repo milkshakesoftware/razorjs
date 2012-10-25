@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RazorJS.Compiler.TemplateBuilders;
+using System;
 using System.IO;
 using System.Web.Razor.Generator;
 using System.Web.Razor.Parser.SyntaxTree;
@@ -7,38 +8,26 @@ namespace RazorJS.Compiler.Translation
 {
 	public class NullSpanTranslator : ISpanTranslator
 	{
-		private readonly IJavaScriptArrayWriter _javaScriptArrayWriter;
-
-		public NullSpanTranslator()
-		{
-			this._javaScriptArrayWriter = new JavaScripArrayWriter();
-		}
-
-		public NullSpanTranslator(IJavaScriptArrayWriter javaScriptArrayWriter)
-		{
-			this._javaScriptArrayWriter = javaScriptArrayWriter;
-		}
-
 		public Type[] SupportsCodeGenerators
 		{
 			get { return new Type[] { typeof(SpanCodeGenerator) }; }
 		}
 
-		public void Translate(Span span, TextWriter writer)
+		public void Translate(Span span, ITemplateBuilder templateBuilder)
 		{
 			if (span == null)
 			{
 				throw new ArgumentNullException("span");
 			}
 
-			if (writer == null)
+			if (templateBuilder == null)
 			{
-				throw new ArgumentNullException("writer");
+				throw new ArgumentNullException("templateBuilder");
 			}
 
 			if (!String.Equals(span.Content, "@"))
 			{
-				this._javaScriptArrayWriter.PushToJavaScriptArray(writer, span.Content, true);
+				templateBuilder.Write(span.Content, true);
 			}
 		}
 	}

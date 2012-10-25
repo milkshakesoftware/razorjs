@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using RazorJS.Compiler;
+using RazorJS.Compiler.TemplateBuilders;
 using RazorJS.Compiler.Translation;
 using RazorJS.CompilerTests.Helpers;
 using System;
-using System.IO;
-using System.Text;
 using System.Web.Razor.Parser.SyntaxTree;
 
 namespace RazorJS.CompilerTests.Translation
@@ -12,66 +12,55 @@ namespace RazorJS.CompilerTests.Translation
 	[TestClass]
 	public class NullSpanTranslatorTests
 	{
-		private Mock<IJavaScriptArrayWriter> _javaScriptArrayWriter;
+		private Mock<ITemplateBuilder> _templateBuilder;
 
 		[TestInitialize]
 		public void TestInitialize()
 		{
-			this._javaScriptArrayWriter = new Mock<IJavaScriptArrayWriter>();
+			this._templateBuilder = new Mock<ITemplateBuilder>();
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
 		public void Translate_GivenNullSpan_ThrowsArgumentNullException()
 		{
-			var sut = new NullSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new NullSpanTranslator();
 
-			using (TextWriter writer = new StringWriter())
-			{
-				sut.Translate(null, writer);
-			}
+			sut.Translate(null, this._templateBuilder.Object);
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
-		public void Translate_GivenNullTextWriter_ThrowsArgumentNullException()
+		public void Translate_GivenNullTemplateBuilder_ThrowsArgumentNullException()
 		{
-			var sut = new NullSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new NullSpanTranslator();
 
 			sut.Translate(new Span(new SpanBuilder()), null);
 		}
 
 		[TestMethod]
-		public void Translate_GivenText_CallsArrayWriterQuoted()
+		public void Translate_GivenText_CallsTemplateBuilderQuoted()
 		{
-			var sut = new NullSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new NullSpanTranslator();
 
 			string input = "asas}}";
 			Span span = SpanHelper.BuildSpan(input);
 
-			StringBuilder sb = new StringBuilder();
-			using (TextWriter writer = new StringWriter(sb))
-			{
-				sut.Translate(span, writer);
+			sut.Translate(span, this._templateBuilder.Object);
 
-				this._javaScriptArrayWriter.Verify(j => j.PushToJavaScriptArray(writer, input, true));
-			}
+			this._templateBuilder.Verify(t => t.Write(input, true));
 		}
 
 		[TestMethod]
-		public void Translate_GivenAtSign_DoesNotCallArrayWriter()
+		public void Translate_GivenAtSign_DoesNotCallTemplateBuilder()
 		{
-			var sut = new NullSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new NullSpanTranslator();
 
 			string input = "@";
 			Span span = SpanHelper.BuildSpan(input);
 
-			StringBuilder sb = new StringBuilder();
-			using (TextWriter writer = new StringWriter(sb))
-			{
-				sut.Translate(span, writer);
-			}
+			sut.Translate(span, this._templateBuilder.Object);
 
-			this._javaScriptArrayWriter.Verify(j => j.PushToJavaScriptArray(It.IsAny<TextWriter>(), It.IsAny<string>()), Times.Never());
-			this._javaScriptArrayWriter.Verify(j => j.PushToJavaScriptArray(It.IsAny<TextWriter>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Never());
+			this._templateBuilder.Verify(t => t.Write(It.IsAny<string>()), Times.Never());
+			this._templateBuilder.Verify(t => t.Write(It.IsAny<string>(), It.IsAny<bool>()), Times.Never());
 		}
 	}
 }

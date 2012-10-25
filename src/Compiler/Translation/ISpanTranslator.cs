@@ -1,5 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using RazorJS.Compiler.TemplateBuilders;
+using System;
 using System.Web.Razor.Parser.SyntaxTree;
 
 namespace RazorJS.Compiler.Translation
@@ -8,6 +8,6 @@ namespace RazorJS.Compiler.Translation
 	{
 		Type[] SupportsCodeGenerators { get; }
 
-		void Translate(Span span, TextWriter writer);
+		void Translate(Span span, ITemplateBuilder builder);
 	}
 }

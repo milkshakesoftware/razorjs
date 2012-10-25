@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using RazorJS.Compiler.TemplateBuilders;
+using System.IO;
 using System.Web.Razor.Parser.SyntaxTree;
 
 namespace RazorJS.Compiler.Translation.CodeTranslation
@@ -9,6 +10,6 @@ namespace RazorJS.Compiler.Translation.CodeTranslation
 
 		bool Match(Span span);
 
-		void Translate(Span span, TextWriter writer);
+		void Translate(Span span, ITemplateBuilder templateBuilder);
 	}
 }

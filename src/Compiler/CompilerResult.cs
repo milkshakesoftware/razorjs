@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Web.Razor.Parser.SyntaxTree;
 
 namespace RazorJS.Compiler
 {
-	public class CompilerResults
+	public class CompilerResult
 	{
-		public CompilerResults(string razorJsTemplate)
+		public CompilerResult(string razorJsTemplate)
 		{
 			this.Success = true;
 			this.RazorJSTemplate = razorJsTemplate;
 			this.ParserErrors = new List<RazorError>();
 		}
 
-		public CompilerResults(IList<RazorError> parserErrors)
+		public CompilerResult(IList<RazorError> parserErrors)
 		{
 			this.Success = false;
 			this.ParserErrors = parserErrors;

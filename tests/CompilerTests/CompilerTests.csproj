@@ -93,10 +93,10 @@
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RazorJSCompilerTests.cs" />
+    <Compile Include="TemplateBuilders\RazorJSTemplateBuilderTests.cs" />
     <Compile Include="Translation\NullSpanTranslatorTests.cs" />
     <Compile Include="Translation\StatementTranslatorTests.cs" />
     <Compile Include="Translation\ExpressionTranslatorTests.cs" />
-    <Compile Include="Translation\JavaScriptArrayWriterTests.cs" />
     <Compile Include="Translation\MarkupSpanTranslatorTests.cs" />
   </ItemGroup>
   <ItemGroup>

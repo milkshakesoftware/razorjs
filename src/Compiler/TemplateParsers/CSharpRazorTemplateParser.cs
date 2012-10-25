@@ -3,7 +3,7 @@ using System.Web.Razor;
 
 namespace RazorJS.Compiler.TemplateParsers
 {
-	public class CSharpRazorTemplateParser : IRazorTemplateParser
+	public class CSharpRazorTemplateParser : ITemplateParser
 	{
 		public ParserResults ParseTemplate(TextReader template)
 		{

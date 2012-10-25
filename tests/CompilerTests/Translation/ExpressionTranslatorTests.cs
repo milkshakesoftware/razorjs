@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using RazorJS.Compiler;
+using RazorJS.Compiler.TemplateBuilders;
 using RazorJS.Compiler.Translation;
 using RazorJS.CompilerTests.Helpers;
 using System;
-using System.IO;
-using System.Text;
 using System.Web.Razor.Parser.SyntaxTree;
 
 namespace RazorJS.CompilerTests.Translation
@@ -12,48 +12,41 @@ namespace RazorJS.CompilerTests.Translation
 	[TestClass]
 	public class ExpressionTranslatorTests
 	{
-		private Mock<IJavaScriptArrayWriter> _javaScriptArrayWriter;
+		private Mock<ITemplateBuilder> _templateBuilder;
 
 		[TestInitialize]
 		public void TestInitialize()
 		{
-			this._javaScriptArrayWriter = new Mock<IJavaScriptArrayWriter>();
+			this._templateBuilder = new Mock<ITemplateBuilder>();
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
 		public void Translate_GivenNullSpan_ThrowsArgumentNullException()
 		{
-			var sut = new ExpressionTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new ExpressionTranslator();
 
-			using (TextWriter writer = new StringWriter())
-			{
-				sut.Translate(null, writer);
-			}
+			sut.Translate(null, this._templateBuilder.Object);
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
-		public void Translate_GivenNullTextWriter_ThrowsArgumentNullException()
+		public void Translate_GivenNullTemplateBuilder_ThrowsArgumentNullException()
 		{
-			var sut = new ExpressionTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new ExpressionTranslator();
 
 			sut.Translate(new Span(new SpanBuilder()), null);
 		}
 
 		[TestMethod]
-		public void Translate_GivenText_CallsArrayWriter()
+		public void Translate_GivenText_CallsTemplateBuilder()
 		{
-			var sut = new ExpressionTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new ExpressionTranslator();
 
 			string input = "Model.Property";
 			Span span = SpanHelper.BuildSpan(input);
 
-			StringBuilder sb = new StringBuilder();
-			using (TextWriter writer = new StringWriter(sb))
-			{
-				sut.Translate(span, writer);
+			sut.Translate(span, this._templateBuilder.Object);
 
-				this._javaScriptArrayWriter.Verify(j => j.PushToJavaScriptArray(writer, input));
-			}
+			this._templateBuilder.Verify(t => t.Write(input));
 		}
 	}
 }

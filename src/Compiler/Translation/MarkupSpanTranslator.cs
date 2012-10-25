@@ -1,5 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using RazorJS.Compiler.TemplateBuilders;
+using System;
 using System.Text;
 using System.Web.Razor.Generator;
 using System.Web.Razor.Parser.SyntaxTree;
@@ -8,33 +8,21 @@ namespace RazorJS.Compiler.Translation
 {
 	public class MarkupSpanTranslator : ISpanTranslator
 	{
-		private readonly IJavaScriptArrayWriter _javaScriptArrayWriter;
-
-		public MarkupSpanTranslator()
-		{
-			this._javaScriptArrayWriter = new JavaScripArrayWriter();
-		}
-
-		public MarkupSpanTranslator(IJavaScriptArrayWriter javaScriptArrayWriter)
-		{
-			this._javaScriptArrayWriter = javaScriptArrayWriter;
-		}
-
 		public Type[] SupportsCodeGenerators
 		{
 			get { return new Type[] { typeof(MarkupCodeGenerator) }; }
 		}
 
-		public void Translate(Span span, TextWriter writer)
+		public void Translate(Span span, ITemplateBuilder templateBuilder)
 		{
 			if (span == null)
 			{
 				throw new ArgumentNullException("span");
 			}
 
-			if (writer == null)
+			if (templateBuilder == null)
 			{
-				throw new ArgumentNullException("writer");
+				throw new ArgumentNullException("templateBuilder");
 			}
 
 			var content = new StringBuilder(span.Content);
@@ -43,7 +31,7 @@ namespace RazorJS.Compiler.Translation
 			content.Replace("\r", "\\r");
 			content.Replace("\n", "\\n");
 
-			this._javaScriptArrayWriter.PushToJavaScriptArray(writer, content.ToString(), true);
+			templateBuilder.Write(content.ToString(), true);
 		}
 	}
 }

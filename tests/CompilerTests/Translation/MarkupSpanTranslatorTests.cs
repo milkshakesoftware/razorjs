@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using RazorJS.Compiler;
+using RazorJS.Compiler.TemplateBuilders;
 using RazorJS.Compiler.Translation;
 using RazorJS.CompilerTests.Helpers;
 using System;
-using System.IO;
-using System.Text;
 using System.Web.Razor.Parser.SyntaxTree;
 
 namespace RazorJS.CompilerTests.Translation
@@ -12,116 +12,93 @@ namespace RazorJS.CompilerTests.Translation
 	[TestClass]
 	public class MarkupSpanTranslatorTests
 	{
-		private Mock<IJavaScriptArrayWriter> _javaScriptArrayWriter;
+		private Mock<ITemplateBuilder> _templateBuilder;
 
 		[TestInitialize]
 		public void TestInitialize()
 		{
-			this._javaScriptArrayWriter = new Mock<IJavaScriptArrayWriter>();
+			this._templateBuilder = new Mock<ITemplateBuilder>();
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
 		public void Translate_GivenNullSpan_ThrowsArgumentNullException()
 		{
-			var sut = new MarkupSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new MarkupSpanTranslator();
 
-			using (TextWriter writer = new StringWriter())
-			{
-				sut.Translate(null, writer);
-			}
+			sut.Translate(null, this._templateBuilder.Object);
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
 		public void Translate_GivenNullTextWriter_ThrowsArgumentNullException()
 		{
-			var sut = new MarkupSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new MarkupSpanTranslator();
 
 			sut.Translate(new Span(new SpanBuilder()), null);
 		}
 
 		[TestMethod]
-		public void Translate_GivenText_CallsArrayWriterQuoted()
+		public void Translate_GivenText_CallsTemplateBuilderQuoted()
 		{
-			var sut = new MarkupSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new MarkupSpanTranslator();
 
 			string input = "Model";
 			Span span = SpanHelper.BuildSpan(input);
 
-			StringBuilder sb = new StringBuilder();
-			using (TextWriter writer = new StringWriter(sb))
-			{
-				sut.Translate(span, writer);
+			sut.Translate(span, this._templateBuilder.Object);
 
-				this._javaScriptArrayWriter.Verify(j => j.PushToJavaScriptArray(writer, input, true));
-			}
+			this._templateBuilder.Verify(t => t.Write(input, true));
 		}
 
 		[TestMethod]
-		public void Translate_GivenTextWithDoubleQuotes_CallsArrayWriterQuoted_DoubleQuotesEscaped()
+		public void Translate_GivenTextWithDoubleQuotes_CallsTemplateBuilderQuoted_DoubleQuotesEscaped()
 		{
-			var sut = new MarkupSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new MarkupSpanTranslator();
 
 			string input = "Hello \"Martin\"!";
 			Span span = SpanHelper.BuildSpan(input);
 
-			StringBuilder sb = new StringBuilder();
-			using (TextWriter writer = new StringWriter(sb))
-			{
-				sut.Translate(span, writer);
+			sut.Translate(span, this._templateBuilder.Object);
 
-				this._javaScriptArrayWriter.Verify(j => j.PushToJavaScriptArray(writer, input.Replace("\"", "\\\""), true));
-			}
+			this._templateBuilder.Verify(t => t.Write(input.Replace("\"", "\\\""), true));
 		}
 
 		[TestMethod]
-		public void Translate_GivenTextWithSingleQuotes_CallsArrayWriterQuoted_SingleQuotesEscaped()
+		public void Translate_GivenTextWithSingleQuotes_CallsTemplateBuilderQuoted_SingleQuotesEscaped()
 		{
-			var sut = new MarkupSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new MarkupSpanTranslator();
 
 			string input = "Hello 'Martin'!";
 			Span span = SpanHelper.BuildSpan(input);
 
-			StringBuilder sb = new StringBuilder();
-			using (TextWriter writer = new StringWriter(sb))
-			{
-				sut.Translate(span, writer);
+			sut.Translate(span, this._templateBuilder.Object);
 
-				this._javaScriptArrayWriter.Verify(j => j.PushToJavaScriptArray(writer, input.Replace("'", "\\'"), true));
-			}
+			this._templateBuilder.Verify(t => t.Write(input.Replace("'", "\\'"), true));
 		}
 
 		[TestMethod]
-		public void Translate_GivenTextWithLineBreakBegin_CallsArrayWriterQuoted_LineBreakEscaped()
+		public void Translate_GivenTextWithLineBreakBegin_CallsTemplateBuilderQuoted_LineBreakEscaped()
 		{
-			var sut = new MarkupSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new MarkupSpanTranslator();
 
 			string input = "Hello \rMartin!";
 			Span span = SpanHelper.BuildSpan(input);
 
-			StringBuilder sb = new StringBuilder();
-			using (TextWriter writer = new StringWriter(sb))
-			{
-				sut.Translate(span, writer);
+			sut.Translate(span, this._templateBuilder.Object);
 
-				this._javaScriptArrayWriter.Verify(j => j.PushToJavaScriptArray(writer, input.Replace("\r", "\\r"), true));
-			}
+			this._templateBuilder.Verify(t => t.Write(input.Replace("\r", "\\r"), true));
 		}
 
 		[TestMethod]
-		public void Translate_GivenTextWithLineBreakEnd_CallsArrayWriterQuoted_LineBreakEscaped()
+		public void Translate_GivenTextWithLineBreakEnd_CallsTemplateBuilderQuoted_LineBreakEscaped()
 		{
-			var sut = new MarkupSpanTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new MarkupSpanTranslator();
 
 			string input = "Hello \nMartin!";
 			Span span = SpanHelper.BuildSpan(input);
 
-			StringBuilder sb = new StringBuilder();
-			using (TextWriter writer = new StringWriter(sb))
-			{
-				sut.Translate(span, writer);
+			sut.Translate(span, this._templateBuilder.Object);
 
-				this._javaScriptArrayWriter.Verify(j => j.PushToJavaScriptArray(writer, input.Replace("\n", "\\n"), true));
-			}
+			this._templateBuilder.Verify(t => t.Write(input.Replace("\n", "\\n"), true));
 		}
 	}
 }

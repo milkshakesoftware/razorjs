@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using RazorJS.Compiler.TemplateBuilders;
 using RazorJS.Compiler.Translation;
 using System;
-using System.IO;
 using System.Web.Razor.Parser.SyntaxTree;
 
 namespace RazorJS.CompilerTests.Translation
@@ -10,29 +10,26 @@ namespace RazorJS.CompilerTests.Translation
 	[TestClass]
 	public class StatementTranslatorTests
 	{
-		private Mock<IJavaScriptArrayWriter> _javaScriptArrayWriter;
+		private Mock<ITemplateBuilder> _templateBuilder;
 
 		[TestInitialize]
 		public void TestInitialize()
 		{
-			this._javaScriptArrayWriter = new Mock<IJavaScriptArrayWriter>();
+			this._templateBuilder = new Mock<ITemplateBuilder>();
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
 		public void Translate_GivenNullSpan_ThrowsArgumentNullException()
 		{
-			var sut = new StatementTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new StatementTranslator();
 
-			using (TextWriter writer = new StringWriter())
-			{
-				sut.Translate(null, writer);
-			}
+			sut.Translate(null, this._templateBuilder.Object);
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
-		public void Translate_GivenNullTextWriter_ThrowsArgumentNullException()
+		public void Translate_GivenNullTemplateBuilder_ThrowsArgumentNullException()
 		{
-			var sut = new StatementTranslator(this._javaScriptArrayWriter.Object);
+			var sut = new StatementTranslator();
 
 			sut.Translate(new Span(new SpanBuilder()), null);
 		}

@@ -1,5 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using RazorJS.Compiler.TemplateBuilders;
+using System;
 using System.Web.Razor.Generator;
 using System.Web.Razor.Parser.SyntaxTree;
 
@@ -7,36 +7,24 @@ namespace RazorJS.Compiler.Translation
 {
 	public class ExpressionTranslator : ISpanTranslator
 	{
-		private readonly IJavaScriptArrayWriter _javaScriptArrayWriter;
-
-		public ExpressionTranslator()
-		{
-			this._javaScriptArrayWriter = new JavaScripArrayWriter();
-		}
-
-		public ExpressionTranslator(IJavaScriptArrayWriter javaScriptArrayWriter)
-		{
-			this._javaScriptArrayWriter = javaScriptArrayWriter;
-		}
-
 		public Type[] SupportsCodeGenerators
 		{
 			get { return new Type[] { typeof(ExpressionCodeGenerator) }; }
 		}
 
-		public void Translate(Span span, TextWriter writer)
+		public void Translate(Span span, ITemplateBuilder templateBuilder)
 		{
 			if (span == null)
 			{
 				throw new ArgumentNullException("span");
 			}
 
-			if (writer == null)
+			if (templateBuilder == null)
 			{
-				throw new ArgumentNullException("writer");
+				throw new ArgumentNullException("templateBuilder");
 			}
 
-			this._javaScriptArrayWriter.PushToJavaScriptArray(writer, span.Content);
+			templateBuilder.Write(span.Content);
 		}
 	}
 }
