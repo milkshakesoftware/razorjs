@@ -1,16 +1,21 @@
-﻿using RazorJS.Compiler.TemplateBuilders;
-using System;
+﻿using System;
 using System.Text;
 using System.Web.Razor.Generator;
 using System.Web.Razor.Parser.SyntaxTree;
+using RazorJS.Compiler.TemplateBuilders;
 
 namespace RazorJS.Compiler.Translation
 {
 	public class MarkupSpanTranslator : ISpanTranslator
 	{
-		public Type[] SupportsCodeGenerators
+		public bool Match(Span span)
 		{
-			get { return new Type[] { typeof(MarkupCodeGenerator) }; }
+			if (span == null)
+			{
+				return false;
+			}
+
+			return span.CodeGenerator.GetType() == typeof(MarkupCodeGenerator);
 		}
 
 		public void Translate(Span span, ITemplateBuilder templateBuilder)

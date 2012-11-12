@@ -98,7 +98,7 @@ namespace RazorJS.Compiler
 
 			System.Diagnostics.Trace.WriteLine(span.CodeGenerator.GetType() + ": " + span.Content);
 
-			ISpanTranslator renderer = this._translators.FirstOrDefault(b => b.SupportsCodeGenerators.Contains(span.CodeGenerator.GetType()));
+			/*ISpanTranslator renderer = this._translators.FirstOrDefault(b => b.SupportsCodeGenerators.Contains(span.CodeGenerator.GetType()));
 
 			if (renderer != null)
 			{
@@ -107,7 +107,7 @@ namespace RazorJS.Compiler
 			else if (span.Kind == SpanKind.Markup)
 			{
 				new NullSpanTranslator().Translate(span, templateBuilder);
-			}
+			}*/
 		}
 
 		private void CreateInternalTranslators()

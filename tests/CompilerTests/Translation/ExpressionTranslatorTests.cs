@@ -6,6 +6,7 @@ using RazorJS.Compiler.Translation;
 using RazorJS.CompilerTests.Helpers;
 using System;
 using System.Web.Razor.Parser.SyntaxTree;
+using System.Web.Razor.Generator;
 
 namespace RazorJS.CompilerTests.Translation
 {
@@ -18,6 +19,40 @@ namespace RazorJS.CompilerTests.Translation
 		public void TestInitialize()
 		{
 			this._templateBuilder = new Mock<ITemplateBuilder>();
+		}
+
+		[TestMethod]
+		public void Match_GivenNullSpan_ReturnsFalse()
+		{
+			var sut = new ExpressionTranslator();
+
+			var result = sut.Match(null);
+
+			Assert.IsFalse(result);
+		}
+
+		[TestMethod]
+		public void Match_GivenExpressionCodeGeneratorSpan_ReturnsTrue()
+		{
+			var span = new Span(new SpanBuilder() { CodeGenerator = new ExpressionCodeGenerator() });
+
+			var sut = new ExpressionTranslator();
+
+			var result = sut.Match(span);
+
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void Match_GivenMarkupCodeGeneratorSpan_ReturnsFalse()
+		{
+			var span = new Span(new SpanBuilder() { CodeGenerator = new MarkupCodeGenerator() });
+
+			var sut = new ExpressionTranslator();
+
+			var result = sut.Match(span);
+
+			Assert.IsFalse(result);
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]

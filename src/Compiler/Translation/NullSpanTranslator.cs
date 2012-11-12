@@ -1,16 +1,20 @@
-﻿using RazorJS.Compiler.TemplateBuilders;
-using System;
-using System.IO;
+﻿using System;
 using System.Web.Razor.Generator;
 using System.Web.Razor.Parser.SyntaxTree;
+using RazorJS.Compiler.TemplateBuilders;
 
 namespace RazorJS.Compiler.Translation
 {
 	public class NullSpanTranslator : ISpanTranslator
 	{
-		public Type[] SupportsCodeGenerators
+		public bool Match(Span span)
 		{
-			get { return new Type[] { typeof(SpanCodeGenerator) }; }
+			if (span == null)
+			{
+				return false;
+			}
+
+			return span.Kind == SpanKind.Markup && span.CodeGenerator == SpanCodeGenerator.Null;
 		}
 
 		public void Translate(Span span, ITemplateBuilder templateBuilder)

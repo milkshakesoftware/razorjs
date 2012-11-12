@@ -1,13 +1,9 @@
-﻿using RazorJS.Compiler.Translation.CodeTranslation;
-using System;
+﻿using System;
 using System.Linq;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Web.Razor.Generator;
 using System.Web.Razor.Parser.SyntaxTree;
-using System.Collections.Generic;
 using RazorJS.Compiler.TemplateBuilders;
+using RazorJS.Compiler.Translation.CodeTranslation;
 
 namespace RazorJS.Compiler.Translation
 {
@@ -20,9 +16,14 @@ namespace RazorJS.Compiler.Translation
 			this._codeSpanTranslators = codeSpanTranslators;
 		}
 
-		public Type[] SupportsCodeGenerators
+		public bool Match(Span span)
 		{
-			get { return new Type[] { typeof(StatementCodeGenerator) }; }
+			if (span == null)
+			{
+				return false;
+			}
+
+			return span.CodeGenerator.GetType() == typeof(StatementCodeGenerator);
 		}
 
 		public void Translate(Span span, ITemplateBuilder templateBuilder)
@@ -38,7 +39,11 @@ namespace RazorJS.Compiler.Translation
 			}
 
 			ICodeSpanTranslator matchedTranslator = this._codeSpanTranslators.FirstOrDefault(c => c.Match(span));
-			matchedTranslator.Translate(span, templateBuilder);
+
+			if (matchedTranslator != null)
+			{
+				matchedTranslator.Translate(span, templateBuilder);
+			}
 		}
 	}
 }

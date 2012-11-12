@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Web.Razor.Generator;
+using System.Web.Razor.Parser.SyntaxTree;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using RazorJS.Compiler;
 using RazorJS.Compiler.TemplateBuilders;
 using RazorJS.Compiler.Translation;
 using RazorJS.CompilerTests.Helpers;
-using System;
-using System.Web.Razor.Parser.SyntaxTree;
 
 namespace RazorJS.CompilerTests.Translation
 {
@@ -18,6 +18,40 @@ namespace RazorJS.CompilerTests.Translation
 		public void TestInitialize()
 		{
 			this._templateBuilder = new Mock<ITemplateBuilder>();
+		}
+
+		[TestMethod]
+		public void Match_GivenNullSpan_ReturnsFalse()
+		{
+			var sut = new MarkupSpanTranslator();
+
+			var result = sut.Match(null);
+
+			Assert.IsFalse(result);
+		}
+
+		[TestMethod]
+		public void Match_GivenMarkupCodeGeneratorSpan_ReturnsTrue()
+		{
+			var span = new Span(new SpanBuilder() { CodeGenerator = new MarkupCodeGenerator() });
+
+			var sut = new MarkupSpanTranslator();
+
+			var result = sut.Match(span);
+
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void Match_GivenExpressionCodeGeneratorSpan_ReturnsFalse()
+		{
+			var span = new Span(new SpanBuilder() { CodeGenerator = new ExpressionCodeGenerator() });
+
+			var sut = new MarkupSpanTranslator();
+
+			var result = sut.Match(span);
+
+			Assert.IsFalse(result);
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
