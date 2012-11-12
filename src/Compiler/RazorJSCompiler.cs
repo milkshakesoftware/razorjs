@@ -46,7 +46,7 @@ namespace RazorJS.Compiler
 			return null;
 		}
 
-		public virtual void Compile(StringReader razorTemplate, ITemplateBuilder templateBuilder)
+		protected virtual void Compile(StringReader razorTemplate, ITemplateBuilder templateBuilder)
 		{
 			RazorEngineHost host = new RazorEngineHost(new CSharpRazorCodeLanguage());
 			RazorTemplateEngine engine = new RazorTemplateEngine(host);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace RazorJS.Compiler.TemplateBuilders
@@ -52,7 +53,7 @@ namespace RazorJS.Compiler.TemplateBuilders
 
 		public CompilerResult Build()
 		{
-			throw new NotImplementedException();
+			return new CompilerResult(String.Join(Environment.NewLine, this._templateCollection.ToArray()));
 		}
 	}
 }

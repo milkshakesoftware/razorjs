@@ -137,5 +137,36 @@ namespace RazorJS.CompilerTests.TemplateBuilders
 
 			this._helperCollection.Verify(h => h.Add(input));
 		}
+
+		[TestMethod]
+		public void Build_ReturnsCompilerResult()
+		{
+			var sut = new RazorJSTemplateBuilder(this._templateCollection.Object, this._helperCollection.Object);
+
+			var result = sut.Build();
+
+			Assert.IsInstanceOfType(result, typeof(CompilerResult));
+		}
+
+		[TestMethod]
+		public void Build_ResultContainsTemplateCollection()
+		{
+			IList<string> templateCollection = new List<string> { "a", "b" };
+			var sut = new RazorJSTemplateBuilder(templateCollection, this._helperCollection.Object);
+
+			CompilerResult result = sut.Build();
+
+			Assert.AreEqual("a\r\nb", result.RazorJSTemplate);
+		}
+
+		[TestMethod]
+		public void Build_CompilerResutl_EmptyErrorsList()
+		{
+			var sut = new RazorJSTemplateBuilder(this._templateCollection.Object, this._helperCollection.Object);
+
+			var result = sut.Build();
+
+			Assert.AreEqual(0, result.ParserErrors.Count);
+		}
 	}
 }
