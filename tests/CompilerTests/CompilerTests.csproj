@@ -94,6 +94,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RazorJSCompilerTests.cs" />
     <Compile Include="TemplateBuilders\RazorJSTemplateBuilderTests.cs" />
+    <Compile Include="Translation\CodeTranslation\ForEachCodeSpanTranslatorTests.cs" />
     <Compile Include="Translation\NullSpanTranslatorTests.cs" />
     <Compile Include="Translation\StatementTranslatorTests.cs" />
     <Compile Include="Translation\ExpressionTranslatorTests.cs" />

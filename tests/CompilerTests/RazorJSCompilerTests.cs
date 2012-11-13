@@ -12,12 +12,12 @@ namespace RazorJS.CompilerTests
 		[TestMethod]
 		public void Debugger()
 		{
-			string viewTemplate = this.GetViewTemplate("Basic_StronglyTyped");
+			/*string viewTemplate = this.GetViewTemplate("Basic_StronglyTyped");
 
 			var sut = new RazorJSCompiler();
 			var result = sut.Compile(viewTemplate);
 
-			Debug.Write(result.RazorJSTemplate);
+			Debug.Write(result.RazorJSTemplate);*/
 		}
 
 		private string GetViewTemplate(string viewName)
