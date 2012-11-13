@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Web.Razor.Generator;
 using System.Web.Razor.Parser.SyntaxTree;
 using RazorJS.Compiler.TemplateBuilders;
@@ -42,8 +43,17 @@ namespace RazorJS.Compiler.Translation
 
 			if (matchedTranslator != null)
 			{
-				matchedTranslator.Translate(span, templateBuilder);
+				matchedTranslator.Translate(CleanConentForCode(span.Content), templateBuilder);
 			}
+		}
+
+		private string CleanConentForCode(string code)
+		{
+			var codeContent = new StringBuilder(code);
+			codeContent.Replace("\r", String.Empty);
+			codeContent.Replace("\n", String.Empty);
+
+			return codeContent.ToString();
 		}
 	}
 }

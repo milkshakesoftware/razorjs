@@ -10,6 +10,6 @@ namespace RazorJS.Compiler.Translation.CodeTranslation
 
 		bool Match(Span span);
 
-		void Translate(Span span, ITemplateBuilder templateBuilder);
+		void Translate(string code, ITemplateBuilder templateBuilder);
 	}
 }

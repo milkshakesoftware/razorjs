@@ -6,6 +6,7 @@ using Moq;
 using RazorJS.Compiler.TemplateBuilders;
 using RazorJS.Compiler.Translation;
 using RazorJS.Compiler.Translation.CodeTranslation;
+using RazorJS.CompilerTests.Helpers;
 
 namespace RazorJS.CompilerTests.Translation
 {
@@ -76,7 +77,7 @@ namespace RazorJS.CompilerTests.Translation
 		[TestMethod]
 		public void Translate_CallsMatchOnCodeSpanTranslator()
 		{
-			var span = new Span(new SpanBuilder());
+			var span = SpanHelper.BuildSpan("a");
 			var sut = new StatementTranslator(this._codeSpanTranslator.Object);
 
 			sut.Translate(span, this._templateBuilder.Object);
@@ -89,12 +90,12 @@ namespace RazorJS.CompilerTests.Translation
 		{
 			this._codeSpanTranslator.Setup(c => c.Match(It.IsAny<Span>())).Returns(true);
 
-			var span = new Span(new SpanBuilder());
+			var span = SpanHelper.BuildSpan("a");
 			var sut = new StatementTranslator(this._codeSpanTranslator.Object);
 
 			sut.Translate(span, this._templateBuilder.Object);
 
-			this._codeSpanTranslator.Verify(c => c.Translate(span, this._templateBuilder.Object));
+			this._codeSpanTranslator.Verify(c => c.Translate(span.Content, this._templateBuilder.Object));
 		}
 
 		[TestMethod]
@@ -104,13 +105,13 @@ namespace RazorJS.CompilerTests.Translation
 			secondTranslator.Setup(c => c.Match(It.IsAny<Span>())).Returns(true);
 			this._codeSpanTranslator.Setup(c => c.Match(It.IsAny<Span>())).Returns(true);
 
-			var span = new Span(new SpanBuilder());
+			var span = SpanHelper.BuildSpan("a");
 			var sut = new StatementTranslator(this._codeSpanTranslator.Object, secondTranslator.Object);
 
 			sut.Translate(span, this._templateBuilder.Object);
 
-			this._codeSpanTranslator.Verify(c => c.Translate(span, this._templateBuilder.Object));
-			secondTranslator.Verify(c => c.Translate(It.IsAny<Span>(), It.IsAny<ITemplateBuilder>()), Times.Never());
+			this._codeSpanTranslator.Verify(c => c.Translate(span.Content, this._templateBuilder.Object));
+			secondTranslator.Verify(c => c.Translate(It.IsAny<string>(), It.IsAny<ITemplateBuilder>()), Times.Never());
 		}
 
 		[TestMethod]
@@ -118,12 +119,25 @@ namespace RazorJS.CompilerTests.Translation
 		{
 			this._codeSpanTranslator.Setup(c => c.Match(It.IsAny<Span>())).Returns(false);
 
-			var span = new Span(new SpanBuilder());
+			var span = SpanHelper.BuildSpan("a");
 			var sut = new StatementTranslator(this._codeSpanTranslator.Object);
 
 			sut.Translate(span, this._templateBuilder.Object);
 
-			this._codeSpanTranslator.Verify(c => c.Translate(It.IsAny<Span>(), It.IsAny<ITemplateBuilder>()), Times.Never());
+			this._codeSpanTranslator.Verify(c => c.Translate(It.IsAny<string>(), It.IsAny<ITemplateBuilder>()), Times.Never());
+		}
+
+		[TestMethod]
+		public void Translate_GivenCodeWithLineBreaks_CleanLineBreaksWhenHandingToTranslator()
+		{
+			this._codeSpanTranslator.Setup(c => c.Match(It.IsAny<Span>())).Returns(true);
+
+			var span = SpanHelper.BuildSpan("a\r\nb");
+			var sut = new StatementTranslator(this._codeSpanTranslator.Object);
+
+			sut.Translate(span, this._templateBuilder.Object);
+
+			this._codeSpanTranslator.Verify(c => c.Translate("ab", It.IsAny<ITemplateBuilder>()));
 		}
 	}
 }

@@ -26,11 +26,11 @@ namespace RazorJS.Compiler.Translation.CodeTranslation
 			return match.Success;
 		}
 
-		public void Translate(Span span, ITemplateBuilder templateBuilder)
+		public void Translate(string code, ITemplateBuilder templateBuilder)
 		{
-			if (span == null)
+			if (code == null)
 			{
-				throw new ArgumentNullException("span");
+				throw new ArgumentNullException("code");
 			}
 
 			if (templateBuilder == null)
@@ -38,7 +38,7 @@ namespace RazorJS.Compiler.Translation.CodeTranslation
 				throw new ArgumentNullException("templateBuilder");
 			}
 
-			Match match = Regex.Match(span.Content, FOREACH_REGEX);
+			Match match = Regex.Match(code, FOREACH_REGEX);
 
 			templateBuilder.Write(String.Format("for(var __i=0; __i<{0}.length; __i++) {{ var {1} = {0}[__i]; ", match.Groups["Enumerator"].Value, match.Groups["Variable"].Value));
 		}

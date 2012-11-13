@@ -61,7 +61,7 @@ namespace RazorJS.CompilerTests.Translation.CodeTranslation
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
-		public void Translate_GivenNullSpan_ThrowsArgumentNullException()
+		public void Translate_GivenNullCode_ThrowsArgumentNullException()
 		{
 			Mock<ITemplateBuilder> templateBuilder = new Mock<ITemplateBuilder>();
 
@@ -75,7 +75,7 @@ namespace RazorJS.CompilerTests.Translation.CodeTranslation
 		{
 			var sut = new ForEachCodeSpanTranslator();
 
-			sut.Translate(SpanHelper.BuildSpan("a"), null);
+			sut.Translate("a", null);
 		}
 
 		[TestMethod]
@@ -85,7 +85,7 @@ namespace RazorJS.CompilerTests.Translation.CodeTranslation
 
 			var sut = new ForEachCodeSpanTranslator();
 
-			sut.Translate(SpanHelper.BuildSpan("@foreach (var item in Collection) {"), templateBuilder.Object);
+			sut.Translate("@foreach (var item in Collection) {", templateBuilder.Object);
 
 			templateBuilder.Verify(t => t.Write("for(var __i=0; __i<Collection.length; __i++) { var item = Collection[__i]; "));
 		}
