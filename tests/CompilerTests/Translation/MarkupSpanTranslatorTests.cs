@@ -63,7 +63,7 @@ namespace RazorJS.CompilerTests.Translation
 		}
 
 		[TestMethod, ExpectedException(typeof(ArgumentNullException))]
-		public void Translate_GivenNullTextWriter_ThrowsArgumentNullException()
+		public void Translate_GivenNullTemplateBuilder_ThrowsArgumentNullException()
 		{
 			var sut = new MarkupSpanTranslator();
 
