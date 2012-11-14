@@ -96,11 +96,14 @@
     <Compile Include="RazorJSCompilerTests.cs" />
     <Compile Include="TemplateBuilders\RazorJSTemplateBuilderTests.cs" />
     <Compile Include="Translation\CodeTranslation\ForEachCodeSpanTranslatorTests.cs" />
+    <Compile Include="Translation\CodeTranslation\EndCodeBlockTranslatorTests.cs" />
     <Compile Include="Translation\NullSpanTranslatorTests.cs" />
     <Compile Include="Translation\StatementTranslatorTests.cs" />
     <Compile Include="Translation\ExpressionTranslatorTests.cs" />
     <Compile Include="Translation\MarkupSpanTranslatorTests.cs" />
     <Compile Include="Translation\DocumentTranslatorTests.cs" />
+    <Compile Include="IntegrationTests.cs" />
+    <Compile Include="Translation\IgnoreSpanTranslatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Compiler\Compiler.csproj">
@@ -113,6 +116,7 @@
     <None Include="Views\Basic_NoModelDefinition.cshtml" />
     <None Include="Views\Basic_StronglyTyped.cshtml" />
     <None Include="Views\ContainsInlineHelper.cshtml" />
+    <None Include="Views\ModelDeclaration.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup />

@@ -13,6 +13,7 @@ namespace RazorJS.Compiler.Translation
 		public DocumentTranslator()
 		{
 			this._translators = new List<ISpanTranslator>();
+			this._translators.Add(new IgnoreSpanTranslator());
 			this._translators.Add(new MarkupSpanTranslator());
 			this._translators.Add(new NullSpanTranslator());
 			this._translators.Add(new ExpressionTranslator());
