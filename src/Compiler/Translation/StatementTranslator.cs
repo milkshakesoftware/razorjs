@@ -52,11 +52,11 @@ namespace RazorJS.Compiler.Translation
 
 			if (matchedTranslator != null)
 			{
-				matchedTranslator.Translate(CleanConentForCode(span.Content), templateBuilder);
+				matchedTranslator.Translate(CleanContentForCode(span.Content), templateBuilder);
 			}
 		}
 
-		private string CleanConentForCode(string code)
+		private string CleanContentForCode(string code)
 		{
 			var codeContent = new StringBuilder(code);
 			codeContent.Replace("\r", String.Empty);
