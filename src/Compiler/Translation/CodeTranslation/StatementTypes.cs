@@ -8,6 +8,8 @@ namespace RazorJS.Compiler.Translation.CodeTranslation
 
 		Foreach = 1,
 
-		If = 2
+		If = 2,
+
+		EndCodeBlock = 3
 	}
 }
