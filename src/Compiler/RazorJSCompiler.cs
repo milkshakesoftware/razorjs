@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web.Razor;
-using System.Web.Razor.Parser.SyntaxTree;
 using RazorJS.Compiler.TemplateBuilders;
 using RazorJS.Compiler.TemplateParsers;
 using RazorJS.Compiler.Translation;
@@ -31,15 +30,8 @@ namespace RazorJS.Compiler
 
 		public virtual CompilerResult Compile(string razorTemplate)
 		{
-			if (razorTemplate == null)
-			{
-				throw new ArgumentNullException("razorTemplate");
-			}
-
-			if (String.IsNullOrWhiteSpace(razorTemplate))
-			{
-				throw new ArgumentException("razorTemplate cannot be empty or white-space!", "razorTemplate");
-			}
+			if (razorTemplate == null) throw new ArgumentNullException("razorTemplate");
+			if (String.IsNullOrWhiteSpace(razorTemplate)) throw new ArgumentException("razorTemplate cannot be empty or white-space!", "razorTemplate");
 
 			ParserResults parserResults = this._templateParser.ParseTemplate(razorTemplate);
 
@@ -48,19 +40,9 @@ namespace RazorJS.Compiler
 				return new CompilerResult(parserResults.ParserErrors);
 			}
 
-			this.BuildTemplate(parserResults.Document);
+			this._documentTranslator.Translate(parserResults.Document, this._templateBuilder);
 
-			return null;
-		}
-
-		private void BuildTemplate(Block document)
-		{
-			this._templateBuilder.Write("function (Model) { ");
-			this._templateBuilder.Write("var _tmpl = []; ");
-
-			this._documentTranslator.Translate(document, this._templateBuilder);
-
-			this._templateBuilder.Write("return _tmpl.join(''); };");
+			return this._templateBuilder.Build();
 		}
 	}
 }

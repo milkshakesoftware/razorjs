@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Web.Razor;
 using System.Web.Razor.Parser.SyntaxTree;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -103,49 +102,10 @@ namespace RazorJS.CompilerTests
 		}
 
 		[TestMethod]
-		public void Compile_WritesFunctionToTemplateBuilder()
-		{
-			string expected = "function (Model) { ";
-			int callOrder = 0;
-
-			this._documentTranslator.Setup(d => d.Translate(It.IsAny<Block>(), It.IsAny<ITemplateBuilder>())).Callback(() => callOrder++);
-			this._templateBuilder.Setup(t => t.Write(It.IsAny<string>())).Callback(() => callOrder++);
-			this._templateBuilder.Setup(t => t.Write(expected)).Callback(() => Assert.AreEqual(0, callOrder++));
-
-			var sut = this.CreateCompiler();
-
-			var result = sut.Compile("a");
-
-			this._templateBuilder.Verify(t => t.Write(expected));
-		}
-
-		[TestMethod]
-		public void Compile_WritesArrayDeclarationToTemplateBuilder()
-		{
-			string expected = "var _tmpl = []; ";
-			int callOrder = 0;
-
-			this._documentTranslator.Setup(d => d.Translate(It.IsAny<Block>(), It.IsAny<ITemplateBuilder>())).Callback(() => callOrder++);
-			this._templateBuilder.Setup(t => t.Write(It.IsAny<string>())).Callback(() => callOrder++);
-			this._templateBuilder.Setup(t => t.Write(expected)).Callback(() => Assert.AreEqual(1, callOrder++));
-
-			var sut = this.CreateCompiler();
-
-			var result = sut.Compile("a");
-
-			this._templateBuilder.Verify(t => t.Write(expected));
-		}
-
-		[TestMethod]
 		public void Compile_CallsDocumentTranslator()
 		{
 			Block document = BlockHelper.BuildEmptyBlock();
 			this._templateParser.Setup(t => t.ParseTemplate(It.IsAny<string>())).Returns(new ParserResults(document, null));
-
-			int callOrder = 0;
-
-			this._templateBuilder.Setup(t => t.Write(It.IsAny<string>())).Callback(() => callOrder++);
-			this._documentTranslator.Setup(d => d.Translate(It.IsAny<Block>(), It.IsAny<ITemplateBuilder>())).Callback(() => Assert.AreEqual(2, callOrder++));
 
 			var sut = this.CreateCompiler();
 
@@ -155,44 +115,26 @@ namespace RazorJS.CompilerTests
 		}
 
 		[TestMethod]
-		public void Compile_WritesReturnStatementToTemplateBuilder()
+		public void Compile_Success_CallsBuildInTemplateBuilder()
 		{
-			string expected = "return _tmpl.join(''); };";
-			int callOrder = 0;
+			var sut = this.CreateCompiler();
 
-			this._documentTranslator.Setup(d => d.Translate(It.IsAny<Block>(), It.IsAny<ITemplateBuilder>())).Callback(() => callOrder++);
-			this._templateBuilder.Setup(t => t.Write(It.IsAny<string>())).Callback(() => callOrder++);
-			this._templateBuilder.Setup(t => t.Write(expected)).Callback(() => Assert.AreEqual(3, callOrder++));
+			var result = sut.Compile("a");
+
+			this._templateBuilder.Verify(t => t.Build());
+		}
+
+		[TestMethod]
+		public void Compile_Success_ReturnsCompilerResultFromTemplateBuilder()
+		{
+			CompilerResult expected = new CompilerResult("a");
+			this._templateBuilder.Setup(t => t.Build()).Returns(expected);
 
 			var sut = this.CreateCompiler();
 
 			var result = sut.Compile("a");
 
-			this._templateBuilder.Verify(t => t.Write(expected));
-		}
-
-		[TestMethod]
-		public void Debugger()
-		{
-			/*string viewTemplate = this.GetViewTemplate("Basic_StronglyTyped");
-
-			var sut = new RazorJSCompiler();
-			var result = sut.Compile(viewTemplate);
-
-			Debug.Write(result.RazorJSTemplate);*/
-		}
-
-		private string GetViewTemplate(string viewName)
-		{
-			DirectoryInfo binFolder = new DirectoryInfo(Environment.CurrentDirectory);
-			string path = Path.Combine(binFolder.Parent.Parent.FullName, String.Format(@"Views\{0}.cshtml", viewName));
-
-			if (File.Exists(path))
-			{
-				return File.ReadAllText(path);
-			}
-
-			throw new FileNotFoundException("A view with the specified viewName, could not be found!", path);
+			Assert.AreEqual(expected, result);
 		}
 
 		private RazorJSCompiler CreateCompiler()
