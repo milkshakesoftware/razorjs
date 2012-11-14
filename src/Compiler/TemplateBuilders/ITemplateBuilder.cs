@@ -8,6 +8,8 @@ namespace RazorJS.Compiler.TemplateBuilders
 
 		void Write(string templateCode, bool quoted);
 
+		void AddCodeBlock(string code);
+
 		void AddHelperFunction(HelperFunction function);
 
 		CompilerResult Build();
