@@ -1,10 +1,9 @@
-﻿using System.IO;
-using System.Web.Razor;
+﻿using System.Web.Razor;
 
 namespace RazorJS.Compiler.TemplateParsers
 {
 	public interface ITemplateParser
 	{
-		ParserResults ParseTemplate(TextReader template);
+		ParserResults ParseTemplate(string template);
 	}
 }

@@ -77,6 +77,8 @@
     <Compile Include="TemplateBuilders\ITemplateBuilder.cs" />
     <Compile Include="TemplateBuilders\RazorJSTemplateBuilder.cs" />
     <Compile Include="Translation\CodeTranslation\ForEachCodeSpanTranslator.cs" />
+    <Compile Include="Translation\DocumentTranslator.cs" />
+    <Compile Include="Translation\IDocumentTranslator.cs" />
     <Compile Include="Translation\ISpanTranslator.cs" />
     <Compile Include="Translation\NullSpanTranslator.cs" />
     <Compile Include="Translation\ExpressionTranslator.cs" />

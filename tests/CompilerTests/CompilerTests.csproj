@@ -89,6 +89,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Helpers\BlockHelper.cs" />
     <Compile Include="Helpers\SpanHelper.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Translation\StatementTranslatorTests.cs" />
     <Compile Include="Translation\ExpressionTranslatorTests.cs" />
     <Compile Include="Translation\MarkupSpanTranslatorTests.cs" />
+    <Compile Include="Translation\DocumentTranslatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Compiler\Compiler.csproj">

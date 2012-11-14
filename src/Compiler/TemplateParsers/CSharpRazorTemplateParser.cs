@@ -5,12 +5,15 @@ namespace RazorJS.Compiler.TemplateParsers
 {
 	public class CSharpRazorTemplateParser : ITemplateParser
 	{
-		public ParserResults ParseTemplate(TextReader template)
+		public ParserResults ParseTemplate(string template)
 		{
 			RazorEngineHost host = new RazorEngineHost(new CSharpRazorCodeLanguage());
 			RazorTemplateEngine engine = new RazorTemplateEngine(host);
 
-			return engine.ParseTemplate(template);
+			using (StringReader sr = new StringReader(template))
+			{
+				return engine.ParseTemplate(sr);
+			}
 		}
 	}
 }
