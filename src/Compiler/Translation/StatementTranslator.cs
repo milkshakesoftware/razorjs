@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Razor.Generator;
@@ -11,6 +12,14 @@ namespace RazorJS.Compiler.Translation
 	public class StatementTranslator : ISpanTranslator
 	{
 		private readonly ICodeSpanTranslator[] _codeSpanTranslators;
+
+		public StatementTranslator()
+		{
+			List<ICodeSpanTranslator> codeSpanTranslators = new List<ICodeSpanTranslator>();
+			codeSpanTranslators.Add(new ForEachCodeSpanTranslator());
+
+			this._codeSpanTranslators = codeSpanTranslators.ToArray();
+		}
 
 		public StatementTranslator(params ICodeSpanTranslator[] codeSpanTranslators)
 		{
