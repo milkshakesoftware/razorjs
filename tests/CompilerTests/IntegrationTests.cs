@@ -31,7 +31,7 @@ namespace RazorJS.CompilerTests
 		public static string GetViewTemplate(string viewName)
 		{
 			DirectoryInfo binFolder = new DirectoryInfo(Environment.CurrentDirectory);
-			string path = Path.Combine(binFolder.FullName, String.Format(@"Views\{0}.cshtml", viewName));
+			string path = Path.Combine(binFolder.Parent.Parent.FullName, String.Format(@"Views\{0}.cshtml", viewName));
 
 			if (File.Exists(path))
 			{

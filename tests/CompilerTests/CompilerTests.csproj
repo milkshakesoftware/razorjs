@@ -113,18 +113,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Views\Basic_NoModelDefinition.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Views\Basic_StronglyTyped.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Views\ContainsInlineHelper.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Views\ModelDeclaration.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="Views\Basic_NoModelDefinition.cshtml" />
+    <None Include="Views\Basic_StronglyTyped.cshtml" />
+    <None Include="Views\ContainsInlineHelper.cshtml" />
+    <None Include="Views\ModelDeclaration.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup />
