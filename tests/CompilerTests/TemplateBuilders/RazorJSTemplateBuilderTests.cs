@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RazorJS.Compiler;
 using RazorJS.Compiler.TemplateBuilders;
-using System;
-using System.Collections.Generic;
 
 namespace RazorJS.CompilerTests.TemplateBuilders
 {
@@ -149,14 +149,14 @@ namespace RazorJS.CompilerTests.TemplateBuilders
 		}
 
 		[TestMethod]
-		public void Build_ResultContainsTemplateCollection()
+		public void Build_ResultContainsTemplateCollectionWrappedInFunction()
 		{
 			IList<string> templateCollection = new List<string> { "a", "b" };
 			var sut = new RazorJSTemplateBuilder(templateCollection, this._helperCollection.Object);
 
 			CompilerResult result = sut.Build();
 
-			Assert.AreEqual("a\r\nb", result.RazorJSTemplate);
+			Assert.AreEqual("function (Model) {\r\nvar _tmpl = [];\r\na\r\nb\r\nreturn _tmpl.join('');\r\n}", result.RazorJSTemplate);
 		}
 
 		[TestMethod]

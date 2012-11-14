@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace RazorJS.Compiler.TemplateBuilders
 {
@@ -53,7 +54,14 @@ namespace RazorJS.Compiler.TemplateBuilders
 
 		public CompilerResult Build()
 		{
-			return new CompilerResult(String.Join(Environment.NewLine, this._templateCollection.ToArray()));
+			StringBuilder sb = new StringBuilder();
+			sb.AppendLine("function (Model) {");
+			sb.AppendLine(String.Format("var {0} = [];", _arrayName));
+			sb.AppendLine(String.Join(Environment.NewLine, this._templateCollection.ToArray()));
+			sb.AppendLine(String.Format("return {0}.join('');", _arrayName));
+			sb.Append("}");
+
+			return new CompilerResult(sb.ToString());
 		}
 	}
 }
