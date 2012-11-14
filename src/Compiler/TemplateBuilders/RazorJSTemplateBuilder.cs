@@ -42,6 +42,16 @@ namespace RazorJS.Compiler.TemplateBuilders
 			this._templateCollection.Add(String.Concat(_arrayName, ".push(", quote, templateCode, quote, ");"));
 		}
 
+		public void AddCodeBlock(string code)
+		{
+			if (String.IsNullOrWhiteSpace(code))
+			{
+				return;
+			}
+
+			this._templateCollection.Add(code);
+		}
+
 		public void AddHelperFunction(HelperFunction function)
 		{
 			if (function == null)

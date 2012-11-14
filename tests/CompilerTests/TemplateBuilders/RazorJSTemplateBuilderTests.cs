@@ -117,6 +117,48 @@ namespace RazorJS.CompilerTests.TemplateBuilders
 		}
 
 		[TestMethod]
+		public void AddCodeBlock_GivenNullCodeBlock_Ignores()
+		{
+			var sut = new RazorJSTemplateBuilder(this._templateCollection.Object, this._helperCollection.Object);
+
+			sut.AddCodeBlock(null);
+
+			this._templateCollection.Verify(t => t.Add(It.IsAny<string>()), Times.Never());
+		}
+
+		[TestMethod]
+		public void AddCodeBlock_GivenEmptyCodeBlock_Ignores()
+		{
+			var sut = new RazorJSTemplateBuilder(this._templateCollection.Object, this._helperCollection.Object);
+
+			sut.AddCodeBlock(String.Empty);
+
+			this._templateCollection.Verify(t => t.Add(It.IsAny<string>()), Times.Never());
+		}
+
+		[TestMethod]
+		public void AddCodeBlock_GivenWhiteSpaceCodeBlock_Ignores()
+		{
+			var sut = new RazorJSTemplateBuilder(this._templateCollection.Object, this._helperCollection.Object);
+
+			sut.AddCodeBlock("  ");
+
+			this._templateCollection.Verify(t => t.Add(It.IsAny<string>()), Times.Never());
+		}
+
+		[TestMethod]
+		public void AddCodeBlock_GivenCodeBlock_AddsToCollection()
+		{
+			var sut = new RazorJSTemplateBuilder(this._templateCollection.Object, this._helperCollection.Object);
+
+			string expected = "a";
+
+			sut.AddCodeBlock(expected);
+
+			this._templateCollection.Verify(t => t.Add(expected));
+		}
+
+		[TestMethod]
 		public void AddHelperFunction_GivenNullFunction_Ignores()
 		{
 			var sut = new RazorJSTemplateBuilder(this._templateCollection.Object, this._helperCollection.Object);
