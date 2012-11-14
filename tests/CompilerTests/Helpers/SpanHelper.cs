@@ -21,7 +21,7 @@ namespace RazorJS.CompilerTests.Helpers
 		public static ModelDeclaration BuildModelDeclaration()
 		{
 			CSharpRazorTemplateParser templateParser = new CSharpRazorTemplateParser();
-			string modelDeclarationTemplate = IntegrationTests.GetViewTemplate("ModelDeclaration");
+			string modelDeclarationTemplate = "@model ProductViewModel\r\n@using RazorJS.CompilerTests.Models";
 
 			ParserResults document = templateParser.ParseTemplate(modelDeclarationTemplate);
 

@@ -15,7 +15,7 @@ namespace RazorJS.CompilerTests
 			Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
 		}
 
-		[TestMethod]
+		[TestMethod, Ignore]
 		public void Debugger()
 		{
 			string viewTemplate = GetViewTemplate("Basic_StronglyTyped");

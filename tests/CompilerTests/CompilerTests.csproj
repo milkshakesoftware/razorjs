@@ -116,7 +116,6 @@
     <None Include="Views\Basic_NoModelDefinition.cshtml" />
     <None Include="Views\Basic_StronglyTyped.cshtml" />
     <None Include="Views\ContainsInlineHelper.cshtml" />
-    <None Include="Views\ModelDeclaration.cshtml" />
     <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup />
