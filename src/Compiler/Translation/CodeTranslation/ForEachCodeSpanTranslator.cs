@@ -40,7 +40,7 @@ namespace RazorJS.Compiler.Translation.CodeTranslation
 
 			Match match = Regex.Match(code, FOREACH_REGEX);
 
-			templateBuilder.Write(String.Format("for(var __i=0; __i<{0}.length; __i++) {{ var {1} = {0}[__i]; ", match.Groups["Enumerator"].Value, match.Groups["Variable"].Value));
+			templateBuilder.AddCodeBlock(String.Format("for(var __i=0; __i<{0}.length; __i++) {{ var {1} = {0}[__i]; ", match.Groups["Enumerator"].Value, match.Groups["Variable"].Value));
 		}
 	}
 }

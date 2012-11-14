@@ -111,7 +111,7 @@ namespace RazorJS.CompilerTests.Translation.CodeTranslation
 
 			sut.Translate("@foreach (var item in Collection) {", templateBuilder.Object);
 
-			templateBuilder.Verify(t => t.Write("for(var __i=0; __i<Collection.length; __i++) { var item = Collection[__i]; "));
+			templateBuilder.Verify(t => t.AddCodeBlock("for(var __i=0; __i<Collection.length; __i++) { var item = Collection[__i]; "));
 		}
 	}
 }
