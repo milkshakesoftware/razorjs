@@ -39,7 +39,31 @@ namespace RazorJS.CompilerTests.Translation.CodeTranslation
 		[TestMethod]
 		public void Match_GivenForEachContent_ReturnsTrue()
 		{
-			var span = SpanHelper.BuildSpan("@foreach (var item in Collection) {");
+			var span = SpanHelper.BuildSpan("foreach (var item in Collection) {");
+
+			var sut = new ForEachCodeSpanTranslator();
+
+			var result = sut.Match(span);
+
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void Match_GivenForEachContentEndingInLineBreak_ReturnsTrue()
+		{
+			var span = SpanHelper.BuildSpan("foreach (var item in Collection) {\r\n");
+
+			var sut = new ForEachCodeSpanTranslator();
+
+			var result = sut.Match(span);
+
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void Match_GivenForEachContentCollectionOnModel_ReturnsTrue()
+		{
+			var span = SpanHelper.BuildSpan("foreach (var item in Model.Collection) {");
 
 			var sut = new ForEachCodeSpanTranslator();
 
