@@ -12,7 +12,13 @@ namespace RazorJS.CompilerTests.Helpers
 	{
 		public static Span BuildSpan(string content)
 		{
+			return BuildSpan(content, SpanKind.Markup);
+		}
+
+		public static Span BuildSpan(string content, SpanKind kind)
+		{
 			SpanBuilder builder = new SpanBuilder();
+			builder.Kind = kind;
 			builder.Accept(new HtmlSymbol(new SourceLocation(), content, HtmlSymbolType.Text));
 
 			return builder.Build();

@@ -6,9 +6,9 @@ namespace RazorJS.Compiler.Translation.CodeTranslation
 	{
 		Unsupported = 0,
 
-		Foreach = 1,
+		GenericCodeStatement = 1,
 
-		If = 2,
+		Foreach = 2,
 
 		EndCodeBlock = 3
 	}

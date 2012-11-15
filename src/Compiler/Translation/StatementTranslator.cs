@@ -18,6 +18,7 @@ namespace RazorJS.Compiler.Translation
 			List<ICodeSpanTranslator> codeSpanTranslators = new List<ICodeSpanTranslator>();
 			codeSpanTranslators.Add(new ForEachCodeSpanTranslator());
 			codeSpanTranslators.Add(new EndCodeBlockTranslator());
+			codeSpanTranslators.Add(new GenericCodeSpanTranslator());
 
 			this._codeSpanTranslators = codeSpanTranslators.ToArray();
 		}

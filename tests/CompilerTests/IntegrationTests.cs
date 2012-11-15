@@ -16,9 +16,26 @@ namespace RazorJS.CompilerTests
 		}
 
 		[TestMethod, Ignore]
-		public void Debugger()
+		public void Basic_NoModelDefinition()
 		{
-			string viewTemplate = GetViewTemplate("Basic_StronglyTyped");
+			RunTestWithView("Basic_NoModelDefinition");
+		}
+
+		[TestMethod, Ignore]
+		public void Basic_StronglyTyped()
+		{
+			RunTestWithView("Basic_StronglyTyped");
+		}
+
+		[TestMethod, Ignore]
+		public void Basic_IfStatement()
+		{
+			RunTestWithView("Basic_IfStatement");
+		}
+
+		private void RunTestWithView(string viewName)
+		{
+			string viewTemplate = GetViewTemplate(viewName);
 
 			Trace.WriteLine(viewTemplate);
 
