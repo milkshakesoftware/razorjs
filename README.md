@@ -1,3 +1,3 @@
-# razor.js [![Build Status](http://ci.milk.sh/app/rest/builds/buildType:\(id:bt9\)/statusIcon)](http://ci.milk.sh/project.html?projectId=project6&tab=projectOverview&guest=1)
+# razor.js [![Build status](https://ci.appveyor.com/api/projects/status/64s5k6m5q3h8e3e8)](https://ci.appveyor.com/project/milkshakesoftware/razorjs)
 
 Compile ASP.NET MVC Razor views to JavaScript templates
